@@ -1,0 +1,20 @@
+-- Usuarios de base de datos para la API y el panel de administración.
+-- Copia este fichero, sustituye los valores en MAYÚSCULAS y ejecútalo como administrador:
+--   sudo mysql < usuarios.sql
+--
+-- IP_SERVIDOR_API    -> IP desde la que se conecta la API a la base de datos
+-- IP_SERVIDOR_ADMIN  -> IP desde la que se conecta el panel de administración
+-- Si la API o el admin están en la misma máquina que la base de datos, usa 'localhost'.
+
+-- API: solo lee productos y crea pedidos
+CREATE USER 'huerta_api'@'IP_SERVIDOR_API' IDENTIFIED BY 'CONTRASEÑA_API';
+GRANT SELECT ON huertaviva.productos TO 'huerta_api'@'IP_SERVIDOR_API';
+GRANT INSERT ON huertaviva.pedidos   TO 'huerta_api'@'IP_SERVIDOR_API';
+
+-- Admin: gestiona productos, pedidos y sus propios usuarios
+CREATE USER 'huerta_admin'@'IP_SERVIDOR_ADMIN' IDENTIFIED BY 'CONTRASEÑA_ADMIN';
+GRANT SELECT, INSERT, UPDATE ON huertaviva.productos      TO 'huerta_admin'@'IP_SERVIDOR_ADMIN';
+GRANT SELECT, UPDATE         ON huertaviva.pedidos        TO 'huerta_admin'@'IP_SERVIDOR_ADMIN';
+GRANT SELECT, INSERT         ON huertaviva.admin_usuarios TO 'huerta_admin'@'IP_SERVIDOR_ADMIN';
+
+FLUSH PRIVILEGES;
